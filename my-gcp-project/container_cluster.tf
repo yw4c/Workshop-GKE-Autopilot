@@ -3,7 +3,9 @@ module "my_cluster_01" {
 
   project_id = var.project_id
   region     = var.region
-  name       = var.cluster_name
+  name       = "my-cluster-01"
   network    = "projects/${var.project_id}/global/networks/default"
   subnetwork = "projects/${var.project_id}/regions/${var.region}/subnetworks/default"
+
+  master_authorized_networks = var.master_authorized_networks
 }

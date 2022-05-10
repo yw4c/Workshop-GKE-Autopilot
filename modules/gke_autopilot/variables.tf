@@ -31,11 +31,13 @@ variable "ip_allocation_policy" {
 
 variable "cluster_ipv4_cidr_block" {
   type    = string
+  // Set to blank to have a range chosen with the default size.
   default = null
 }
 
 variable "services_ipv4_cidr_block" {
   type    = string
+  // Set to blank to have a range chosen with the default size.
   default = null
 }
 

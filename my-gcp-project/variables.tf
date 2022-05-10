@@ -8,12 +8,17 @@ variable "credential_json" {
   default = "../credentials/experiment-348917-7eec1fb9c4cc.json"
 }
 
+variable "master_authorized_networks" {
+  type = list(object({ cidr_block = string, display_name = string }))
+  default = [
+    {
+      display_name = "Change me"
+      cidr_block   = "0.0.0.0/0"
+    }
+  ]
+}
+
 variable "region" {
   type    = string
   default = "us-central1"
-}
-
-variable "cluster_name" {
-  type    = string
-  default = "my-cluster-01"
 }

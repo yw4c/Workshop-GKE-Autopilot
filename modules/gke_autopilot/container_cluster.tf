@@ -1,10 +1,8 @@
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
+# container_cluster arguments : https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
 
 resource "google_container_cluster" "primary" {
 
-
   provider = google-beta
-
   name     = var.name
   project  = var.project_id
   location = var.region
@@ -33,15 +31,8 @@ resource "google_container_cluster" "primary" {
     }
   }
 
-
-
   release_channel {
     channel = "REGULAR"
-  }
-
-
-  cluster_telemetry {
-    type = "ENABLED"
   }
 
   maintenance_policy {
@@ -54,8 +45,15 @@ resource "google_container_cluster" "primary" {
     enabled = true
   }
 
-
+  // networking_mode VPC_NATIVE: Use VPC network. refer https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips#benefits
   networking_mode = "VPC_NATIVE"
-  ip_allocation_policy {}
+  // ip_allocation_policy: Set CIDR for VPC_NATIVE
+  dynamic "ip_allocation_policy" {
+    for_each = var.ip_allocation_policy == true ? tolist([1]) : []
+    content {
+      cluster_ipv4_cidr_block  = var.cluster_ipv4_cidr_block
+      services_ipv4_cidr_block = var.services_ipv4_cidr_block
+    }
+  }
 
 }
