@@ -1,10 +1,22 @@
 # Workshop: GKE Autopilot Cluster
 For this part, we will create a private cluster in autopilot mode by terraform.
-
+* Goals
+  * Static IP for ingress
+  * Static IP for egress
+    
+* This workshop will generate following cost.
+  
+  |-|spec|Price/Month|Use|
+  |---|---|---|---|
+  |Autopilot|spot POD*1|[From $3](https://cloud.google.com/kubernetes-engine/pricing#autopilot_mode)|
+  |LoadBalance|*1|
+  |NAT|*1|
 ---
 ## Required tools
-* [terraform](https://www.terraform.io/downloads)
-* [gcloud](https://cloud.google.com/sdk/docs/install) 
+|tool|refer version|
+|---|---|
+|[terraform](https://www.terraform.io/downloads)|v1.1.9| 
+|[gcloud](https://cloud.google.com/sdk/docs/install)| 384.0.1 |
 
 ## About Autopilot
 1. Compare with standard
@@ -55,5 +67,9 @@ For this part, we will create a private cluster in autopilot mode by terraform.
    kubectl get ns
    ```
 
+1. 
+```shell
+kubectl apply -f cluster-tools.yaml 
+```
 ## Reference
 * [terraform module of auto-pilot](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine/tree/master/modules/beta-autopilot-private-cluster) 

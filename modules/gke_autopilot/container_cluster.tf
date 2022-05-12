@@ -35,17 +35,9 @@ resource "google_container_cluster" "primary" {
     channel = "REGULAR"
   }
 
-  maintenance_policy {
-    daily_maintenance_window {
-      start_time = "02:00"
-    }
-  }
-
-  pod_security_policy_config {
-    enabled = true
-  }
-
-  // networking_mode VPC_NATIVE: Use VPC network. refer https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips#benefits
+  // networking_mode: Use VPC_NATIVE network for pod traffic and container-native LB.
+  // vpc-native, refer https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips#benefits
+  // container-native LB, refer https://cloud.google.com/kubernetes-engine/docs/how-to/container-native-load-balancing
   networking_mode = "VPC_NATIVE"
   // ip_allocation_policy: Set CIDR for VPC_NATIVE
   dynamic "ip_allocation_policy" {
@@ -54,6 +46,21 @@ resource "google_container_cluster" "primary" {
       cluster_ipv4_cidr_block  = var.cluster_ipv4_cidr_block
       services_ipv4_cidr_block = var.services_ipv4_cidr_block
     }
+  }
+#  pod_security_policy_config {
+#    enabled = false
+#  }
+
+  addons_config {
+
+    horizontal_pod_autoscaling {
+      disabled = "false"
+    }
+
+    http_load_balancing {
+      disabled = var.http_load_balancing_disabled
+    }
+
   }
 
 }

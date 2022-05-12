@@ -67,3 +67,7 @@ variable "master_ipv4_cidr_block" {
   default = "192.168.20.48/28"
 }
 
+variable "http_load_balancing_disabled" {
+  type    = bool
+  default = false
+}
